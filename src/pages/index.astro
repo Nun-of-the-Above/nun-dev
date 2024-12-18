@@ -1,8 +1,14 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
+import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+
+const posts = (await getCollection('blog')).sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
+);
 ---
 
 <!doctype html>
@@ -13,25 +19,46 @@ import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 	<body>
 		<Header />
 		<main>
-			<p>Hi, I'm Nun.</p>
-			<p>
-				This is a place for me to think and jot down loose thoughts. It's a chaotic mess of a site but you'll have to live with that.
-			</p>
+			<article>
+				<h1>Hi, I'm Nun.</h1>
+				<p>
+					This is a place for me to think and jot down loose thoughts. It's a chaotic mess of a site but you'll have to live with that.
+				</p>
 
-			<p>I'm a software developer with a whole host of interests:</p>
+				<p>I'm a software developer with a whole host of interests:</p>
 
-			<ul class="list-disc list-inside">
-				<li>Crypto</li>
-				<li>Privacy</li>
-				<li>Philosophy</li>
-				<li>History</li>
-				<li>Geopolitics</li>
-			</ul>
-			<br />
+				<ul class="list-disc list-inside">
+					<li>Crypto</li>
+					<li>Privacy</li>
+					<li>Philosophy</li>
+					<li>History</li>
+					<li>Geopolitics</li>
+				</ul>
 
-			<p>
-				My plan is for this site just to be a peak into my thoughts, a digital garden of sorts.
-			</p>
+				<p>
+					My plan is for this site just to be a peak into my thoughts, a digital garden of sorts.
+				</p>
+			</article>
+
+			<section class="mt-16">
+				<h2>Latest Posts</h2>
+				<ul class="flex flex-col md:flex-row flex-wrap gap-8 max-w-screen-xl mx-auto px-4 w-full">
+					{
+						posts.map((post) => (
+							<li class="rounded-lg shadow-md hover:shadow-xl transition-shadow w-full md:w-[calc(33.333%-1.33rem)]">
+								<a href={`/blog/${post.slug}/`} class="block w-full">
+									<div class="p-6">
+										<h4 class="title text-2xl font-bold mb-2">{post.data.title}</h4>
+										<p class="date text-gray-600 mb-0">
+											<FormattedDate date={post.data.pubDate} />
+										</p>
+									</div>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
 		</main>
 		<Footer />
 	</body>
