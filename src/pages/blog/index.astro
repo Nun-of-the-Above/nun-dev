@@ -25,16 +25,6 @@ const posts = (await getCollection('blog')).sort(
 						posts.map((post) => (
 							<li class="rounded-lg shadow-md hover:shadow-xl transition-shadow w-full">
 								<a href={`/blog/${post.slug}/`} class="block w-full">
-									<div class="aspect-video overflow-hidden">
-										<img 
-											width={720} 
-											height={360} 
-											
-											src={post.data.heroImage} 
-											alt="" 
-											class="w-full h-full object-cover"
-										/>
-									</div>
 									<div class="p-6">
 										<h4 class="title text-2xl font-bold mb-2">{post.data.title}</h4>
 										<p class="date text-gray-600 mb-0">
